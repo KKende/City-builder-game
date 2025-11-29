@@ -19,6 +19,7 @@ void Game::AddBuildings() {
     std::string size;
     std::cin >> size;
     int u_x, u_y;
+    this->PrintMap();
     std::cout << "Place the building \n"
         << "cord x ";
         std::cin >> u_x;
@@ -37,6 +38,7 @@ void Game::AddBuildings() {
     else {
         return;
     }
+    system("cls");
     Building *building;
     GridType new_gridType;
     if(forh == 1) {
@@ -69,9 +71,9 @@ void Game::AddBuildings() {
         building->SetSizeY(temp);
     }
     bool canBuild = true;
-    if (u_x < 0 || u_y < 0 || u_x + building->GetSizeX() > 25 || u_y + building->GetSizeY() > 25) canBuild = false;
+    if (u_x < 1 || u_y < 1 || u_x + building->GetSizeX() > 25 || u_y + building->GetSizeY() > 25) canBuild = false;
     for (int y = u_y; y < u_y + building->GetSizeY() && canBuild; y++) {
-        if (y > 24 || y < 0) canBuild = false;
+        if (y > 24 || y < 1) canBuild = false;
         for (int x = u_x; x < u_x + building->GetSizeX(); x++) {
             if (_map[y][x].GetType() != GridType::EMPTY) {
                 canBuild = false;
@@ -142,7 +144,6 @@ void Game::PrintBuildings() {
 }
 
 void Game::DisplayScore() {
-    _score = (_turnNumber * 10) + (_money * 0.5) + (_happyness * 20) + (_population * 5);
     std::cout 
         << "Turn number : " << _turnNumber << "\n"
         << "Score :" << _score << "\n"
@@ -154,7 +155,17 @@ void Game::DisplayScore() {
 void Game::PrintMap() {
     for (int y = 0; y < 25; y++) {
         for (int x = 0; x < 25; x++) {
-            std::cout << _map[y][x].GetTypeToString() << " ";
+            if(x == 0) {
+                if(y > 9) std::cout << y << " ";
+                else std::cout << " " << y << " ";
+            } 
+            else if(y == 0) {
+                if(x > 9) {
+                    std::cout << x << " ";
+                }
+                else std::cout << " " << x << " ";
+            } 
+            else std::cout << _map[y][x].GetTypeToString() << " ";
         }
         std::cout << std::endl;
     }
@@ -172,6 +183,7 @@ bool Game::EndTurn() {
     else if(_happyness > 100) {
         _happyness = 100;
     }
+    _score += (_turnNumber * 2) + (_money * 0.2) + (_happyness * 5) + (_population * 2);
     this->DisplayScore();
     std::cout << std::endl;
     return true;
@@ -284,49 +296,51 @@ void Game::Menu() {
         std::cout 
             << std::endl
             << "____________MENU____________ \n"
-            << "Add building : " << MenuPoints::ADD_BUILDING << "\n"
-            << "Destroy building : " << MenuPoints::DESTROY_BUILDING << "\n"
-            << "Print buildings : " << MenuPoints::PRINT_BUILDINGS << "\n"
-            << "Display Score : " << MenuPoints::DISPLAY_SCORE << "\n"
-            << "Print Map : " << MenuPoints::PRINTMAP << "\n"
-            << "End Turn : " << MenuPoints::ENDTURN << "\n"
-            << "Save game :" << MenuPoints::SAVE << "\n"
-            << "Load game :" << MenuPoints::LOAD << "\n"
-            << "Exit : " << MenuPoints::EXIT << std::endl;
+            << "Add building : " << MenuPoints::ADD_BUILDING + 1 << "\n"
+            << "Destroy building : " << MenuPoints::DESTROY_BUILDING + 1 << "\n"
+            << "Print buildings : " << MenuPoints::PRINT_BUILDINGS + 1 << "\n"
+            << "Display Score : " << MenuPoints::DISPLAY_SCORE + 1 << "\n"
+            << "Print Map : " << MenuPoints::PRINTMAP + 1 << "\n"
+            << "End Turn : " << MenuPoints::ENDTURN + 1<< "\n"
+            << "Save game :" << MenuPoints::SAVE + 1 << "\n"
+            << "Load game :" << MenuPoints::LOAD + 1 << "\n"
+            << "Exit : " << MenuPoints::EXIT + 1 << std::endl;
             int userChoice;
             std::cin >> userChoice;
         switch (userChoice) {
-            case MenuPoints::ADD_BUILDING :
+            case MenuPoints::ADD_BUILDING + 1 :
                 system("cls");
                 this->AddBuildings();
                 break;
-            case MenuPoints::DESTROY_BUILDING :
+            case MenuPoints::DESTROY_BUILDING + 1 :
                 system("cls");
                 this->DestroyBuilding();
                 break;
-            case MenuPoints::PRINT_BUILDINGS :
+            case MenuPoints::PRINT_BUILDINGS + 1 :
                 system("cls");
                 this->PrintBuildings();
                 break;
-            case MenuPoints::DISPLAY_SCORE :
+            case MenuPoints::DISPLAY_SCORE + 1 :
                 system("cls");
                 this->DisplayScore();
                 break;
-            case MenuPoints::PRINTMAP :
+            case MenuPoints::PRINTMAP + 1 :
                 system("cls");
                 this->PrintMap();
                 break;
-            case MenuPoints::ENDTURN :
+            case MenuPoints::ENDTURN + 1 :
                 system("cls");
                 exit = !this->EndTurn();
                 break;
-            case MenuPoints::SAVE :
+            case MenuPoints::SAVE + 1 :
+                system("cls");
                 this->SaveGame();
                 break;
-            case MenuPoints::LOAD :
+            case MenuPoints::LOAD + 1 :
+                system("cls");
                 this->LoadGame();
                 break;
-            case MenuPoints::EXIT :
+            case MenuPoints::EXIT + 1 :
                 exit = true;
                 break;
         }

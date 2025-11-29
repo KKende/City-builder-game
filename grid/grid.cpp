@@ -9,12 +9,12 @@ GridType Grid::GetType() {
 std::string Grid::GetTypeToString() {
     switch (this->_type) {
         case GridType::HOUSE :
-            return "H";
+            return "HH";
         case GridType::FACTORY :
-            return "F";
+            return "FF";
         case GridType::EMPTY :
-            return ".";
-        default : return ".";
+            return "..";
+        default : return "..";
     }
 }
 
